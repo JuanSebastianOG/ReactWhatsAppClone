@@ -1,10 +1,17 @@
 import React from 'react';
 import './App.css';
+import Sidebar from './components/Sidebar';
+import Chat from './components/Chat';
 
 function App() {
   return (
-    <div className="App">
-      <h1>LETS BUILD WHATSAPP</h1>
+    <div className="app">
+      <div className="app__body">
+        {/*Sidebar */}
+        <Sidebar/>
+        {/* Chat */}
+        <Chat/>
+      </div>
     </div>
   );
 }
