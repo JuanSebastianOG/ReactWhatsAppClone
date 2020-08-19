@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import '../csscomponents/Sidebar.css'
 import { Avatar, IconButton } from "@material-ui/core"
 import DonutLargeIcon from "@material-ui/icons/DonutLarge";
@@ -11,13 +11,17 @@ function Sidebar() {
     const [rooms, setRooms] = useState([]);
 
     useEffect(() => {
-        db.collection('rooms').onSnapshot(snapshot => (
+        const unsubscribe = db.collection('rooms').onSnapshot(snapshot => (
             setRooms(snapshot.docs.map(doc => ({
                 id: doc.id,
                 data: doc.data()
             })))
         )
         )
+        //Good practise for scaling
+        return () => {
+            unsubscribe();
+        }
     }, [])
 
     return (
@@ -44,8 +48,8 @@ function Sidebar() {
             </div>
             <div className="sidebar_chats">
                 <SidebarChat addNewChat />
-                {rooms.map(room=>(
-                    <SidebarChat key={room.id} id={room.id} name={room.data.name}/>
+                {rooms.map(room => (
+                    <SidebarChat key={room.id} id={room.id} name={room.data.name} />
                 ))}
             </div>
         </div>
