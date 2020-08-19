@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import '../csscomponents/Chat.css'
 import { Avatar, IconButton } from '@material-ui/core';
-import { AttachFile, MoreVert, SearchOutlined, InsertEmoticon, MessageSharp } from "@material-ui/icons";
+import { AttachFile, MoreVert, SearchOutlined, InsertEmoticon } from "@material-ui/icons";
 import MicIcon from "@material-ui/icons/Mic"
 import { useParams } from "react-router-dom"
 import "../csscomponents/Chat.css"
@@ -22,14 +22,12 @@ function Chat() {
             db.collection('rooms').doc(roomId).onSnapshot((snaphot) =>
                 setRoomName(snaphot.data().name));
 
-            db.collection("rooms").doc(roomId).collection("messages").orderBy('timestamp', 'asc').onSnapshot((snapshot) => setMessages(snapshot.docs.map((doc) => doc.data())))
-        }
-        return () => {
-
+            db.collection("rooms").doc(roomId).collection("messages").
+            orderBy('timestamp', 'asc').onSnapshot((snapshot) => 
+            setMessages(snapshot.docs.map((doc) => doc.data())))
+            console.log('aca vamoo',messages)
         }
     }, [roomId])
-
-
     useEffect(() => {
         setSeed(Math.floor(Math.random() * 5000))
     }, [roomId]);
@@ -69,8 +67,8 @@ function Chat() {
                 </div>
             </div>
             <div className="chat__body">
-                {messages.map(message => (
-                    <p className={`chat__message ${message.name === user.displayName && "chat__reciever"}`}>
+                {messages.map((message) => (
+                    <p key={Math.floor(Math.random() * 5000)} className={`chat__message ${message.name === user.displayName && "chat__reciever"}`}>
                         <span className="chat__name">{message.name}</span>
                         {message.message}
                         <span className="chat__timestamp">
